@@ -2,7 +2,7 @@ import Square from "./Square";
 
 export default function Row() {
   return (
-    <div>
+    <div className="border-row">
       <Square />
       <Square />
       <Square />
