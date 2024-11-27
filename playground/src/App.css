@@ -1,9 +1,3 @@
-#root{
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
-}
 .square{
     min-height: 50px;
     min-width: 50px;

@@ -8,9 +8,9 @@ export default function Row() {
   }
   return (
     <div className="row">
-      <Square handleClick={onSquareClick} />
-      <Square />
-      <Square />
+      <Square handleClick={onSquareClick} value={""} />
+      <Square handleClick={onSquareClick} value={""} />
+      <Square handleClick={onSquareClick} value={""} />
     </div>
   );
 }

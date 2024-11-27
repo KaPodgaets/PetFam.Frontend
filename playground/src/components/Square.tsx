@@ -1,3 +1,5 @@
+import { Button } from "@mui/material";
+
 type Props = {
   value: string;
   handleClick: () => void;
