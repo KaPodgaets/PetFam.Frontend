@@ -1,22 +1,24 @@
-import { useState } from "react";
 import Square from "./Square";
 
-export default function Board() {
-  const [squares, setSquares] = useState<string[]>(Array(9).fill(null));
-  const [xIsNext, setXIsNext] = useState(true);
+type Props = {
+  xIsNext: boolean;
+  squares: Array<string>;
+  onPlay: (nextSquares: string[]) => void;
+};
 
+export default function Board({ xIsNext, squares, onPlay }: Props) {
   function onSquareClick(i: number) {
     if (squares[i] || calculateWinner(squares)) return;
-    const newArray = squares.slice();
+
+    const nextSquares = squares.slice();
 
     if (xIsNext) {
-      newArray[i] = "X";
+      nextSquares[i] = "X";
     } else {
-      newArray[i] = "O";
+      nextSquares[i] = "O";
     }
 
-    setSquares(newArray);
-    setXIsNext(!xIsNext);
+    onPlay(nextSquares);
   }
 
   const winner = calculateWinner(squares);
@@ -25,30 +27,6 @@ export default function Board() {
     status = "Winner: " + winner;
   } else {
     status = "Next player: " + (xIsNext ? "X" : "O");
-  }
-
-  function calculateWinner(squares: Array<string>) {
-    const lines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-    for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[i];
-      if (
-        squares[a] &&
-        squares[a] === squares[b] &&
-        squares[a] === squares[c]
-      ) {
-        return squares[a];
-      }
-    }
-    return null;
   }
 
   return (
@@ -71,4 +49,24 @@ export default function Board() {
       </div>
     </div>
   );
+}
+
+function calculateWinner(squares: string[]) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
 }

@@ -1,9 +1,9 @@
-import Board from "../components/Board";
+import Game from "../components/Game";
 
 export default function TicTacToe() {
   return (
     <div>
-      <Board />
+      <Game />
     </div>
   );
 }

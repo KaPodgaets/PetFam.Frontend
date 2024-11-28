@@ -11,6 +11,9 @@ export default function Header() {
         <NavLink to="/game" className="text">
           Play!
         </NavLink>
+        <NavLink to="/game-from-tutorial" className="text">
+          Play Totorial Game
+        </NavLink>
         <NavLink to="/about" className="text">
           About
         </NavLink>
