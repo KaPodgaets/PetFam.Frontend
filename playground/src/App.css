@@ -1,0 +1,9 @@
+.square{
+    min-height: 50px;
+    min-width: 50px;
+    border: 1px solid #000;
+}
+
+.row {
+    display: flex;
+}
