@@ -31,21 +31,6 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col justify-center items-center my-auto h-full bg-white">
-      <div>
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition={Bounce}
-        />
-      </div>
       <div>{isLoading ? <CircularProgress /> : <p>{text}</p>}</div>
       <h1 className="text-2xl pb-4">Login</h1>
       <div className="py-2">
