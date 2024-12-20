@@ -1,54 +1,84 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getHello } from "../../api/hello";
-import CircularProgress from "@mui/material/CircularProgress";
-import { ToastContainer, toast } from "react-toastify";
-import { Bounce } from "react-toastify/unstyled";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
-  const [text, setText] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
   const notify = (x: string) => toast(x);
 
-  useEffect(() => {
+  function handleEmailChange(email: string): void {
+    setEmail(email);
+  }
+
+  function handlePasswordChange(password: string): void {
+    setPassword(password);
+  }
+
+  function handleFormSubmit(event: React.FormEvent): void {
+    event.preventDefault();
+    console.log("form submitted");
+    // form validation
+    if (email.includes("@") == false) {
+      setEmailError("Incorrect email");
+      console.log({ emailError });
+    }
+
+    if (password.length < 6) {
+      setEmailError("Incorrect password");
+    }
+    // send request
+
     const fetchHello = async () => {
-      setIsLoading(true);
       try {
         const result: string = await getHello();
-        setText(result);
-        setIsLoading(false);
-        notify(result);
       } catch (error) {
-        setIsLoading(false);
         notify("wow that's an error");
         console.error(error);
       }
     };
-
-    fetchHello();
-  }, []);
+  }
 
   return (
     <div className="flex flex-col justify-center items-center my-auto h-full bg-white">
-      <div>{isLoading ? <CircularProgress /> : <p>{text}</p>}</div>
       <h1 className="text-2xl pb-4">Login</h1>
-      <div className="py-2">
-        <TextField id="login-input" label="Login" variant="outlined" />
-      </div>
-      <div className="py-2">
-        <TextField
-          id="password-input"
-          label="Password"
-          variant="outlined"
-          type="password"
-        />
-      </div>
-      <div className="py-2">
-        <Button variant="contained" size="large">
-          Login
-        </Button>
-      </div>
+      <form
+        className="flex flex-col items-center"
+        onSubmit={(event) => {
+          handleFormSubmit(event);
+        }}
+      >
+        <div className="py-2">
+          <TextField
+            value={email}
+            id="email-input"
+            label="Login"
+            variant="outlined"
+            onChange={(event) => handleEmailChange(event.target.value)}
+            error={!!emailError}
+            helperText={emailError}
+          />
+        </div>
+        <div className="py-2">
+          <TextField
+            id="password-input"
+            value={password}
+            label="Password"
+            variant="outlined"
+            type="password"
+            onChange={(event) => handlePasswordChange(event.target.value)}
+          />
+        </div>
+        <div className="flex flex-col py-2 items-center justify-center">
+          <Button type="submit" variant="contained" size="large">
+            Login
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }
