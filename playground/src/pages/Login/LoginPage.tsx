@@ -1,76 +1,85 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import React, { useEffect, useState } from "react";
-import { getHello } from "../../api/hello";
 import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { AccountsService } from "../../services/accounts";
 
+type LoginFields = {
+  userEmail: string;
+  password: string;
+};
 export default function LoginPage() {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
-  const [passwordError, setPasswordError] = useState<string>("");
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [accessToken, setAccessToken] = useState<string>("");
+  const [refreshToken, setRefreshToken] = useState<string>("");
+
   const notify = (x: string) => toast(x);
 
-  function handleEmailChange(email: string): void {
-    setEmail(email);
-  }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFields>();
 
-  function handlePasswordChange(password: string): void {
-    setPassword(password);
-  }
-
-  function handleFormSubmit(event: React.FormEvent): void {
-    event.preventDefault();
-    console.log("form submitted");
-    // form validation
-    if (email.includes("@") == false) {
-      setEmailError("Incorrect email");
-      console.log({ emailError });
+  const OnSubmit = async (data: LoginFields) => {
+    console.log(data);
+    try {
+      setIsLoading(true);
+      const response = await AccountsService.login(
+        data.userEmail,
+        data.password
+      );
+      setAccessToken(response.data.result!.accessToken);
+      setRefreshToken(response.data.result!.refreshToken);
+      console.log(response);
+      console.log(accessToken, refreshToken);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      setIsError(true);
+      console.log(error);
+      notify("something went wrong");
     }
+  };
 
-    if (password.length < 6) {
-      setEmailError("Incorrect password");
-    }
-    // send request
-
-    const fetchHello = async () => {
-      try {
-        const result: string = await getHello();
-      } catch (error) {
-        notify("wow that's an error");
-        console.error(error);
-      }
-    };
-  }
+  useEffect(() => {}, [refreshToken]);
 
   return (
     <div className="flex flex-col justify-center items-center my-auto h-full bg-white">
+      <div>
+        <p>{accessToken}</p>
+        <p>{refreshToken}</p>
+      </div>
       <h1 className="text-2xl pb-4">Login</h1>
       <form
         className="flex flex-col items-center"
-        onSubmit={(event) => {
-          handleFormSubmit(event);
-        }}
+        onSubmit={handleSubmit(OnSubmit)}
       >
         <div className="py-2">
           <TextField
-            value={email}
-            id="email-input"
             label="Login"
             variant="outlined"
-            onChange={(event) => handleEmailChange(event.target.value)}
-            error={!!emailError}
-            helperText={emailError}
+            error={!!errors.userEmail}
+            helperText={errors.userEmail?.message}
+            {...register("userEmail", {
+              required: "Email is required",
+              validate: (value) => {
+                if (!value.includes("@")) {
+                  return "Email have to contain @";
+                }
+              },
+            })}
           />
         </div>
         <div className="py-2">
           <TextField
-            id="password-input"
-            value={password}
             label="Password"
             variant="outlined"
             type="password"
-            onChange={(event) => handlePasswordChange(event.target.value)}
+            {...register("password", { required: true })}
           />
         </div>
         <div className="flex flex-col py-2 items-center justify-center">
