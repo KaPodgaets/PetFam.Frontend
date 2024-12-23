@@ -4,8 +4,17 @@ import Header from "../components/Header/Header";
 import ContentBlock from "../components/ContentBlock";
 import Footer from "../components/Footer/Footer";
 import { Bounce, ToastContainer } from "react-toastify";
+import { apiRequest } from "../services/apiRequest";
+import { useAuth } from "../contexts/auth/useAuth";
 
 function MainLayout() {
+  const { accessToken } = useAuth();
+
+  apiRequest.interceptors.request.use((config) => {
+    config.headers["Authorization"] = `Bearer ${accessToken}`;
+    return config;
+  });
+
   return (
     <div className="h-screen flex flex-col sm:px-4">
       <Header />

@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { Envelope } from "../models/Envelope";
+import { apiRequest } from "./apiRequest";
 
 const API_URL: string = "http://localhost/backend/Accounts/";
 const API_URL_local: string = "http://localhost:5098/Accounts/";
@@ -13,9 +14,17 @@ export class AccountsService {
     userEmail: string,
     password: string
   ): Promise<AxiosResponse<Envelope<LoginResponse>>> {
-    return axios.post<Envelope<LoginResponse>>(API_URL_local + "login", {
+    return apiRequest.post<Envelope<LoginResponse>>("Accounts/login", {
       userEmail,
       password,
+    });
+  }
+
+  static async refreshToken(
+    refreshToken: string
+  ): Promise<AxiosResponse<Envelope<LoginResponse>>> {
+    return axios.post<Envelope<LoginResponse>>("Accounts/refresh", {
+      refreshToken,
     });
   }
 }

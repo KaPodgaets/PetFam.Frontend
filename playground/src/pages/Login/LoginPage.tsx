@@ -1,57 +1,29 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { AccountsService } from "../../services/accounts";
+import { useAuth } from "../../contexts/auth/useAuth";
 
 type LoginFields = {
   userEmail: string;
   password: string;
 };
 export default function LoginPage() {
-  const [isError, setIsError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const [accessToken, setAccessToken] = useState<string>("");
-  const [refreshToken, setRefreshToken] = useState<string>("");
-
-  const notify = (x: string) => toast(x);
+  const { accessToken, login } = useAuth();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isLoading },
   } = useForm<LoginFields>();
 
   const OnSubmit = async (data: LoginFields) => {
-    console.log(data);
-    try {
-      setIsLoading(true);
-      const response = await AccountsService.login(
-        data.userEmail,
-        data.password
-      );
-      setAccessToken(response.data.result!.accessToken);
-      setRefreshToken(response.data.result!.refreshToken);
-      console.log(response);
-      console.log(accessToken, refreshToken);
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      setIsError(true);
-      console.log(error);
-      notify("something went wrong");
-    }
+    await login(data.userEmail, data.password);
   };
-
-  useEffect(() => {}, [refreshToken]);
 
   return (
     <div className="flex flex-col justify-center items-center my-auto h-full bg-white">
-      <div>
-        <p>{accessToken}</p>
-        <p>{refreshToken}</p>
+      <div className="w-full">
+        <h1>accessToken : {accessToken}</h1>
       </div>
       <h1 className="text-2xl pb-4">Login</h1>
       <form
@@ -83,7 +55,12 @@ export default function LoginPage() {
           />
         </div>
         <div className="flex flex-col py-2 items-center justify-center">
-          <Button type="submit" variant="contained" size="large">
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            disabled={isLoading}
+          >
             Login
           </Button>
         </div>
