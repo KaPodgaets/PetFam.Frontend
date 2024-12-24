@@ -3,6 +3,7 @@ import { User } from "../../models/User";
 import { AuthContext } from "./AuthContext";
 import { AccountsService } from "../../services/accounts";
 import { apiRequest } from "../../services/apiRequest";
+import { set } from "react-hook-form";
 
 type Props = { children: React.ReactNode };
 export const AuthProvider = ({ children }: Props) => {
@@ -17,7 +18,11 @@ export const AuthProvider = ({ children }: Props) => {
       (config) => config,
       (error) => {
         if (error.response.status === 401) {
-          AccountsService.refreshToken(refreshToken!);
+          try{
+            const response = await AccountsService.refresh(refreshToken!);
+            setAccessToken(response.data.result!.accessToken);
+          }
+          
         }
         return Promise.reject(error);
       }

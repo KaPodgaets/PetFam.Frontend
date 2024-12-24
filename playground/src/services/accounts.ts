@@ -3,7 +3,7 @@ import { Envelope } from "../models/Envelope";
 import { apiRequest } from "./apiRequest";
 
 const API_URL: string = "http://localhost/backend/Accounts/";
-const API_URL_local: string = "http://localhost:5098/Accounts/";
+const API_URL_local: string = "http://localhost:5098/";
 
 type LoginResponse = {
   accessToken: string;
@@ -20,11 +20,13 @@ export class AccountsService {
     });
   }
 
-  static async refreshToken(
+  static async refresh(
     refreshToken: string
   ): Promise<AxiosResponse<Envelope<LoginResponse>>> {
-    return axios.post<Envelope<LoginResponse>>("Accounts/refresh", {
-      refreshToken,
-    });
+    return axios.post<Envelope<LoginResponse>>(
+      API_URL_local + "Accounts/refresh",
+      {},
+      { withCredentials: true }
+    );
   }
 }
