@@ -2,6 +2,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../contexts/auth/useAuth";
+import { apiRequest } from "../../services/apiRequest";
 
 type LoginFields = {
   userEmail: string;
@@ -18,6 +19,16 @@ export default function LoginPage() {
 
   const OnSubmit = async (data: LoginFields) => {
     await login(data.userEmail, data.password);
+  };
+
+  const testRequest = async () => {
+    console.log("test request! accessToken : ", accessToken);
+    const response = await apiRequest.get("/Accounts/test", {
+      headers: {
+        Authorization: `Bearer jhsdjkfhkjassdasdfasdfasdkjfh`,
+      },
+    });
+    console.log("test request! response : ", response);
   };
 
   return (
@@ -65,6 +76,17 @@ export default function LoginPage() {
           </Button>
         </div>
       </form>
+      <div className="flex flex-col py-2 items-center justify-center">
+        <Button
+          type="submit"
+          variant="contained"
+          size="large"
+          disabled={isLoading}
+          onClick={testRequest}
+        >
+          Test Request
+        </Button>
+      </div>
     </div>
   );
 }

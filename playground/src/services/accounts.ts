@@ -20,9 +20,7 @@ export class AccountsService {
     });
   }
 
-  static async refresh(
-    refreshToken: string
-  ): Promise<AxiosResponse<Envelope<LoginResponse>>> {
+  static async refresh(): Promise<AxiosResponse<Envelope<LoginResponse>>> {
     return axios.post<Envelope<LoginResponse>>(
       API_URL_local + "Accounts/refresh",
       {},
