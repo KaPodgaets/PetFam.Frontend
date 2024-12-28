@@ -25,31 +25,31 @@ export const AuthProvider = ({ children }: Props) => {
     };
   }, [accessToken]);
 
-  // useLayoutEffect(() => {
-  //   const refreshInterceptor = apiRequest.interceptors.response.use(
-  //     (config) => config,
-  //     async (error) => {
-  //       if (error.response.status === 401) {
-  //         const originalRequest = error.config;
-  //         try {
-  //           const response = await AccountsService.refresh();
+  useLayoutEffect(() => {
+    const refreshInterceptor = apiRequest.interceptors.response.use(
+      (config) => config,
+      async (error) => {
+        if (error.response.status === 401) {
+          const originalRequest = error.config;
+          try {
+            const response = await AccountsService.refresh();
 
-  //           setAccessToken(response.data.result!.accessToken);
+            setAccessToken(response.data.result!.accessToken);
 
-  //           originalRequest.headers["Authorization"] = `Bearer ${
-  //             response.data.result!.accessToken
-  //           }`;
+            originalRequest.headers["Authorization"] = `Bearer ${
+              response.data.result!.accessToken
+            }`;
 
-  //           return apiRequest(originalRequest);
-  //         } catch {
-  //           setAccessToken(undefined);
-  //         }
-  //       }
-  //       return Promise.reject(error);
-  //     }
-  //   );
-  //   return () => apiRequest.interceptors.response.eject(refreshInterceptor);
-  // }, []);
+            return apiRequest(originalRequest);
+          } catch {
+            setAccessToken(undefined);
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+    return () => apiRequest.interceptors.response.eject(refreshInterceptor);
+  }, []);
 
   const login = async (userEmail: string, password: string) => {
     try {

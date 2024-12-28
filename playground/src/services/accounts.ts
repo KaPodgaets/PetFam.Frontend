@@ -9,6 +9,7 @@ type LoginResponse = {
   accessToken: string;
   refreshToken: string;
 };
+
 export class AccountsService {
   static async login(
     userEmail: string,
