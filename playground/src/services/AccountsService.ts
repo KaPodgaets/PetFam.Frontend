@@ -7,7 +7,6 @@ const API_URL_local: string = "http://localhost:5098/";
 
 type LoginResponse = {
   accessToken: string;
-  refreshToken: string;
 };
 
 export class AccountsService {

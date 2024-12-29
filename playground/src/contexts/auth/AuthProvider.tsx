@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { AccountsService } from "../../services/AccountsService";
 import { axiosInstance } from "../../services/apiRequest";
@@ -12,6 +12,9 @@ export const AuthProvider = ({ children }: Props) => {
       (config) => {
         config.headers.Authorization = `Bearer ${accessToken}`;
         return config;
+      },
+      (error) => {
+        return Promise.reject(error);
       }
     );
     return () => {
@@ -19,24 +22,31 @@ export const AuthProvider = ({ children }: Props) => {
     };
   }, [accessToken]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const refreshInterceptor = axiosInstance.interceptors.response.use(
       (config) => config,
       async (error) => {
         if (error.response.status === 401) {
           const originalRequest = error.config;
-          try {
-            const response = await AccountsService.refresh();
+          if (!originalRequest._retry) {
+            originalRequest._retry = true;
 
-            setAccessToken(response.data.result!.accessToken);
+            try {
+              const response = await AccountsService.refresh();
+              const newAccessToken = response.data.result!.accessToken;
 
-            originalRequest.headers["Authorization"] = `Bearer ${
-              response.data.result!.accessToken
-            }`;
+              console.log(accessToken);
 
-            return axiosInstance(originalRequest);
-          } catch {
-            setAccessToken(undefined);
+              originalRequest.headers[
+                "Authorization"
+              ] = `Bearer ${newAccessToken}`;
+
+              setAccessToken(response.data.result!.accessToken);
+              console.log(accessToken);
+              return axiosInstance(originalRequest);
+            } catch {
+              setAccessToken(undefined);
+            }
           }
         }
         return Promise.reject(error);
