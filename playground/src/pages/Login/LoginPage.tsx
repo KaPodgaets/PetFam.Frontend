@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../contexts/auth/useAuth";
-import { apiRequest } from "../../services/apiRequest";
+import { axiosInstance } from "../../services/apiRequest";
 
 type LoginFields = {
   userEmail: string;
@@ -22,13 +22,8 @@ export default function LoginPage() {
   };
 
   const testRequest = async () => {
-    console.log("test request! accessToken : ", accessToken);
-    const response = await apiRequest.get("/Accounts/test", {
-      headers: {
-        Authorization: `Bearer jhsdjkfhkjassdasdfasdfasdkjfh`,
-      },
-    });
-    console.log("test request! response : ", response);
+    const response = await axiosInstance.get("/Accounts/test", {});
+    console.log(response.data.result);
   };
 
   return (

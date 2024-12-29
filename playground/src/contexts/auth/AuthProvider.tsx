@@ -1,32 +1,26 @@
 import { useEffect, useLayoutEffect, useState } from "react";
-import { User } from "../../models/User";
 import { AuthContext } from "./AuthContext";
-import { AccountsService } from "../../services/accounts";
-import { apiRequest } from "../../services/apiRequest";
+import { AccountsService } from "../../services/AccountsService";
+import { axiosInstance } from "../../services/apiRequest";
 
 type Props = { children: React.ReactNode };
 export const AuthProvider = ({ children }: Props) => {
   const [accessToken, setAccessToken] = useState<string | undefined>();
-  const [user, setUser] = useState<User | undefined>();
-  const [someText, setSomeText] = useState<string | undefined>(
-    "something fucking shit"
-  );
 
   useEffect(() => {
-    console.log("use effec - accessToken : ", accessToken);
-    const accessTokenInterceptor = apiRequest.interceptors.request.use(
+    const accessTokenInterceptor = axiosInstance.interceptors.request.use(
       (config) => {
         config.headers.Authorization = `Bearer ${accessToken}`;
         return config;
       }
     );
     return () => {
-      apiRequest.interceptors.request.eject(accessTokenInterceptor);
+      axiosInstance.interceptors.request.eject(accessTokenInterceptor);
     };
   }, [accessToken]);
 
   useLayoutEffect(() => {
-    const refreshInterceptor = apiRequest.interceptors.response.use(
+    const refreshInterceptor = axiosInstance.interceptors.response.use(
       (config) => config,
       async (error) => {
         if (error.response.status === 401) {
@@ -40,7 +34,7 @@ export const AuthProvider = ({ children }: Props) => {
               response.data.result!.accessToken
             }`;
 
-            return apiRequest(originalRequest);
+            return axiosInstance(originalRequest);
           } catch {
             setAccessToken(undefined);
           }
@@ -48,7 +42,7 @@ export const AuthProvider = ({ children }: Props) => {
         return Promise.reject(error);
       }
     );
-    return () => apiRequest.interceptors.response.eject(refreshInterceptor);
+    return () => axiosInstance.interceptors.response.eject(refreshInterceptor);
   }, []);
 
   const login = async (userEmail: string, password: string) => {
@@ -61,7 +55,7 @@ export const AuthProvider = ({ children }: Props) => {
   };
 
   return (
-    <AuthContext.Provider value={{ accessToken, user, login }}>
+    <AuthContext.Provider value={{ accessToken, login }}>
       {children}
     </AuthContext.Provider>
   );
