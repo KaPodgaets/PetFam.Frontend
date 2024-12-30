@@ -1,26 +1,18 @@
-import { api } from "../../shared/baseApi";
+import { baseApi } from "../../shared/baseApi";
+import { Pet } from "./PetsSlice";
 
-export const petsEndpoints = api.injectEndpoints({
+export const petsEndpoints = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    fetchPets: builder.query({
-      query: () => "Species?Page=1&PageSize=10",
-    }),
-    addPet: builder.mutation({
-      query: (newPet) => ({
-        url: "Pets",
-        method: "POST",
-        body: newPet,
+    fetchPets: builder.query<Pet[], { page: number; pageSize: number }>({
+      query: ({ page, pageSize }) => ({
+        url: "/species",
+        params: { Page: page, PageSize: pageSize },
       }),
-    }),
-    deletePet: builder.mutation({
-      query: (petId) => ({
-        url: `Pets/${petId}`,
-        method: "DELETE",
-      }),
+      transformResponse: (response: { result: { items: Pet[] } }) =>
+        response.result.items,
     }),
   }),
   overrideExisting: false, // Set to `true` to allow overriding endpoints
 });
 
-export const { useFetchPetsQuery, useAddPetMutation, useDeletePetMutation } =
-  petsEndpoints;
+export const { useFetchPetsQuery } = petsEndpoints;
