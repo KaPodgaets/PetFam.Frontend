@@ -10,7 +10,9 @@ export const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     const accessTokenInterceptor = axiosInstance.interceptors.request.use(
       (config) => {
-        config.headers.Authorization = `Bearer ${accessToken}`;
+        if (accessToken) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
+        }
         return config;
       },
       (error) => {
