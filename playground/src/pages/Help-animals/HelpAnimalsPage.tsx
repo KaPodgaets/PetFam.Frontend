@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import { PetCard } from "../../components/Pet/PetCard";
 import { useRootDispatch, useRootSelector } from "../../store/store";
-import { axiosInstance } from "../../services/axiosInstance";
-import { setPets } from "../../modules/volunteers/PetsSlice";
-import {
-  setPetsIsPending,
-  setPetsLoadingIsFailed,
-  setPetsLoadingIsSucceded,
-} from "../../modules/volunteers/PetsSlice";
+import { fetchPets } from "../../modules/volunteers/PetsSlice";
 
 export default function HelpAnimalsPage() {
   const [isError, setIsError] = useState(false);
@@ -17,18 +11,9 @@ export default function HelpAnimalsPage() {
   const dispatch = useRootDispatch();
 
   useEffect(() => {
-    dispatch(setPetsIsPending());
-
-    axiosInstance
-      .get("Species?Page=1&PageSize=10")
-      .then((res) => res.data)
-      .then((data) => dispatch(setPets(data.result.items)))
-      .catch((error) => {
-        console.log(error);
-        dispatch(setPetsLoadingIsFailed());
-      });
-
-    dispatch(setPetsLoadingIsSucceded());
+    if (isLoading === "idle" || isLoading === "failed") {
+      dispatch(fetchPets());
+    }
   }, [dispatch]);
 
   if (isLoading == "pending") {
