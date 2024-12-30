@@ -1,4 +1,4 @@
-import { Pet } from "../../modules/volunteers/PetsSlice";
+import { Pet } from "../../modules/volunteers/Pet";
 
 type Props = {
   pet: Pet;
