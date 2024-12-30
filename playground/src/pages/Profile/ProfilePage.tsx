@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { axiosInstance } from "../../services/apiRequest";
+import { axiosInstance } from "../../services/axiosInstance";
 
 export default function ProfilePage() {
   useEffect(() => {

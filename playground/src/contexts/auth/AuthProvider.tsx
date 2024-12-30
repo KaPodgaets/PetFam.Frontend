@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { AccountsService } from "../../services/AccountsService";
-import { axiosInstance } from "../../services/apiRequest";
+import { axiosInstance } from "../../services/axiosInstance";
 
 type Props = { children: React.ReactNode };
 export const AuthProvider = ({ children }: Props) => {

@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { Envelope } from "../models/Envelope";
-import { axiosInstance } from "./apiRequest";
+import { axiosInstance } from "./axiosInstance";
 
 const API_URL: string = "http://localhost/backend/Accounts/";
 const API_URL_local: string = "http://localhost:5098/";

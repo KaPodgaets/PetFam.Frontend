@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../contexts/auth/useAuth";
-import { axiosInstance } from "../../services/apiRequest";
+import { axiosInstance } from "../../services/axiosInstance";
 
 type LoginFields = {
   userEmail: string;
