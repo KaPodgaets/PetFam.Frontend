@@ -24,4 +24,4 @@ export const petsEndpoints = baseApi.injectEndpoints({
   overrideExisting: false, // Set to `true` to allow overriding endpoints
 });
 
-export const { useFetchPetsQuery } = petsEndpoints;
+export const { useFetchPetsQuery, useAddPetMutation } = petsEndpoints;
