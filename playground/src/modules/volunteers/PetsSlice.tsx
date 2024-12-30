@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Envelope } from "../../models/Envelope";
+import { Envelope } from "../../types/Envelope";
 import { axiosInstance } from "../../services/axiosInstance";
 
 export type PetId = string;
