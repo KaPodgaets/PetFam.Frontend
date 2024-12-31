@@ -1,29 +1,29 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../contexts/auth/useAuth";
-import { axiosInstance } from "../../services/axiosInstance";
+import { useRootDispatch, useRootSelector } from "../../store/store";
+import { authSelectors } from "../../modules/auth/authSlice";
+import { loginThunk } from "../../modules/auth/login/logInThunk";
 
 type LoginFields = {
   userEmail: string;
   password: string;
 };
 export default function LoginPage() {
-  const { accessToken, login } = useAuth();
-
   const {
     register,
     handleSubmit,
     formState: { errors, isLoading },
   } = useForm<LoginFields>();
 
-  const OnSubmit = async (data: LoginFields) => {
-    await login(data.userEmail, data.password);
-  };
+  const dispatch = useRootDispatch();
 
-  const testRequest = async () => {
-    const response = await axiosInstance.get("/Accounts/test", {});
-    console.log(response.data.result);
+  const fetchStatus = useRootSelector(authSelectors.selectAuthFetchStatus);
+  const accessToken = useRootSelector(authSelectors.selectAccessToken);
+
+  const OnSubmit = async (data: LoginFields) => {
+    dispatch(loginThunk(data));
+    console.log(data);
   };
 
   return (
@@ -71,17 +71,6 @@ export default function LoginPage() {
           </Button>
         </div>
       </form>
-      <div className="flex flex-col py-2 items-center justify-center">
-        <Button
-          type="submit"
-          variant="contained"
-          size="large"
-          disabled={isLoading}
-          onClick={testRequest}
-        >
-          Test Request
-        </Button>
-      </div>
     </div>
   );
 }
