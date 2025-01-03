@@ -33,7 +33,7 @@ const baseQueryWithRefresh = async (args: any, api: any, extraOptions: any) => {
 
       try {
         const authResponse = await baseQuery(
-          { url: "/Accounts/login", method: "POST" },
+          { url: "/Accounts/refresh", method: "POST" },
           api,
           extraOptions
         );

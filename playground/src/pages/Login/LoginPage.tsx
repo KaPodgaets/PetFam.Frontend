@@ -23,7 +23,6 @@ export default function LoginPage() {
 
   const OnSubmit = async (data: LoginFields) => {
     dispatch(loginThunk(data));
-    console.log(data);
   };
 
   return (
