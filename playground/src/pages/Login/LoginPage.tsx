@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
-import { useRootDispatch, useRootSelector } from "../../store/store";
+import { useRootDispatch, useRootSelector } from "../../store/redux";
 import { authSelectors } from "../../modules/auth/authSlice";
 import { loginThunk } from "../../modules/auth/login/logInThunk";
 
