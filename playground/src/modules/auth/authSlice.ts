@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-// import { loginCases } from "./login/logInThunk";
+import { loginCases } from "./login/logInThunk";
 
 export type AuthState = {
   accessToken: string | undefined;
@@ -41,7 +41,7 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // loginCases(builder);
+    loginCases(builder);
   },
 });
 

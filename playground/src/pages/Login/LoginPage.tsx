@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { useRootDispatch, useRootSelector } from "../../store/redux";
 import { authSelectors } from "../../modules/auth/authSlice";
-// import { loginThunk } from "../../modules/auth/login/logInThunk";
+import { loginThunk } from "../../modules/auth/login/logInThunk";
 
 type LoginFields = {
   userEmail: string;
@@ -22,7 +22,7 @@ export default function LoginPage() {
   const accessToken = useRootSelector(authSelectors.selectAccessToken);
 
   const OnSubmit = async (data: LoginFields) => {
-    // dispatch(loginThunk(data));
+    dispatch(loginThunk(data));
   };
 
   return (
