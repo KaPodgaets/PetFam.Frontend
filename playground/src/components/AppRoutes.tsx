@@ -1,6 +1,6 @@
 // AppRoutes.tsx
 import React from "react";
-import MainLayout from "../layouts/MainLayout"; // Adjust the import path as needed
+import MainLayout from "./layouts/MainLayout"; // Adjust the import path as needed
 import HelpAnimalsPage from "../pages/Help-animals/HelpAnimalsPage";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import VolunteersPage from "../pages/Volunteers/VolunteersPage";

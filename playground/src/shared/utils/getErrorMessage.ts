@@ -1,7 +1,7 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { errorMessages } from "./errorMessages";
 import { SerializedError } from "@reduxjs/toolkit";
-import { Envelope } from "../../types/Envelope";
+import { Envelope } from "../types/Envelope";
 
 export const getErrorMessage = (
   error: FetchBaseQueryError | SerializedError | undefined

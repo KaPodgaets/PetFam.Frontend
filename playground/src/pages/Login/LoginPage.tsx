@@ -1,9 +1,6 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
-import { useRootDispatch, useRootSelector } from "../../store/redux";
-import { authSelectors } from "../../modules/auth/authSlice";
-import { loginThunk } from "../../modules/auth/login/logInThunk";
 
 type LoginFields = {
   userEmail: string;
@@ -16,20 +13,11 @@ export default function LoginPage() {
     formState: { errors, isLoading },
   } = useForm<LoginFields>();
 
-  const dispatch = useRootDispatch();
-
-  const fetchStatus = useRootSelector(authSelectors.selectAuthFetchStatus);
-  const accessToken = useRootSelector(authSelectors.selectAccessToken);
-
-  const OnSubmit = async (data: LoginFields) => {
-    dispatch(loginThunk(data));
-  };
+  const OnSubmit = async (data: LoginFields) => {};
 
   return (
     <div className="flex flex-col justify-center items-center my-auto h-full bg-white">
-      <div className="w-full">
-        <h1>accessToken : {accessToken}</h1>
-      </div>
+      <div className="w-full">{/* <h1>accessToken : {accessToken}</h1> */}</div>
       <h1 className="text-2xl pb-4">Login</h1>
       <form
         className="flex flex-col items-center"

@@ -1,8 +1,8 @@
 import { Outlet } from "react-router";
 import "./MainLayout.css";
-import Header from "../components/Header/Header";
-import ContentBlock from "../components/ContentBlock";
-import Footer from "../components/Footer/Footer";
+import Header from "../Header/Header";
+import ContentBlock from "../ContentBlock";
+import Footer from "../Footer/Footer";
 import { Bounce, ToastContainer } from "react-toastify";
 
 function MainLayout() {
