@@ -52,7 +52,7 @@ export default function ProfilePage() {
       </div>
       <div>
         <Button onClick={() => refetchWIthToken()}>
-          fetch without credentials
+          fetch WITH credentials
         </Button>
       </div>
       <div>
